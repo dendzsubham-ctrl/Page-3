@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Password Protected Dice Roller</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 50px;
+    }
+    #login, #protected {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      display: inline-block;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+    input {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 220px;
+    }
+    button {
+      padding: 10px 16px;
+      border: none;
+      background: #007BFF;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+    button:hover:enabled { background: #0056b3; }
+    #diceResult {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .hint {
+      font-size: 14px;
+      color: #666;
+      margin-top: 8px;
+    }
+  </style>
+  <script>
+    function checkPassword() {
+      const password = document.getElementById("password").value.trim().toLowerCase();
+      const validPasswords = ["orion"];
+      if (validPasswords.includes(password)) {
+        document.getElementById("protected").style.display = "block";
+        document.getElementById("login").style.display = "none";
+        document.getElementById("password").value = "";
+      } else {
+        alert("❌ Wrong password!");
+      }
+    }
+
+    function rollDice() {
+      const dice = Math.floor(Math.random() * 6) + 1;
+      document.getElementById("diceResult").innerText =
+        "🎲 You rolled: " + dice;
+
+      // Disable the roll button after one use
+      document.getElementById("rollBtn").disabled = true;
+    }
+
+    // Allow Enter key to submit password
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("password").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") checkPassword();
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="login">
+    <h2>🔒 Enter Password</h2>
+    <input type="password" id="password" placeholder="Password">
+    <br>
+    <button onclick="checkPassword()">Login</button>
+    <p class="hint">💡 Hint: You see me on the night sky and i look like a warrior</p>
+  </div>
+
+  <div id="protected" style="display:none;">
+    <h1>🎉 Welcome!</h1>
+    <p>You now have access to the dice roller.</p>
+    <button id="rollBtn" onclick="rollDice()">🎲 Roll One Die</button>
+    <div id="diceResult"></div>
+  </div>
+</body>
+</html>
